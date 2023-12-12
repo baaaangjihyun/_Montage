@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,10 @@
     <style>
         body {
             margin: 0;
-            overflow: hidden; /* 스크롤 막기 */
+            overflow: hidden;
+            /* 스크롤 막기 */
         }
+        h1 {text-decoration-line: underline;}
 
         #gif-container {
             position: fixed;
@@ -32,27 +35,36 @@
             left: 50%;
             transform: translate(-50%, -50%);
             width: 900px;
-            height: 700px;
+            height: 650px;
             background-color: white;
-            overflow: auto; /* 스크롤이 가능하도록 overflow 속성 추가 */
+            overflow: auto;
+            /* 스크롤이 가능하도록 overflow 속성 추가 */
             display: flex;
-            flex-direction: column; /* 이미지와 텍스트를 세로로 배치하기 위해 추가 */
+            flex-direction: column;
+            /* 이미지와 텍스트를 세로로 배치하기 위해 추가 */
             align-items: center;
-            padding: 20px; /* 위아래 여백을 조절하는 부분 */
+            padding: 20px;
+            /* 위아래 여백을 조절하는 부분 */
         }
+
 
         #centered-image {
             max-width: 100%;
-            max-height: calc(100% - 40px); /* 이미지의 최대 높이를 흰 사각형 높이에서 여백을 뺀 값으로 설정 */
-            margin-bottom: 20px; /* 이미지 아래에 여백 추가 */
+            max-height: calc(100% - 40px);
+            /* 이미지의 최대 높이를 흰 사각형 높이에서 여백을 뺀 값으로 설정 */
+            margin-bottom: 30px;
+            /* 이미지 아래에 여백 추가 */
         }
 
         #scroll-text {
             text-align: center;
             color: black;
             transition: color 0.3s ease;
-            z-index: 1; /* 텍스트가 배경 위에 나타나도록 z-index 설정 */
-            margin-top: 400px;
+            z-index: 1;
+            /* 텍스트가 배경 위에 나타나도록 z-index 설정 */
+            /* margin-top: 400px; */
+            position: fixed;
+            bottom: 0px;
         }
 
         #scroll-text:hover {
@@ -61,6 +73,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="gif-container">
         <video id="video-background" autoplay muted loop>
@@ -70,9 +83,11 @@
     </div>
 
     <div id="white-rectangle">
+          <a id="centered-image" href="index.html">
         <img id="centered-image" src="logo.png" alt="Centered Image">
+    </a>
         <div id="scroll-text" onclick="redirectToOtherPage()">
-            <h1>Please enter your information</h1>
+            <h1>Click and Please enter your information</h1>
         </div>
     </div>
 
@@ -83,4 +98,5 @@
         }
     </script>
 </body>
+
 </html>
