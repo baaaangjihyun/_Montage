@@ -1,17 +1,23 @@
 <!-- main-page.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
     <style type="text/css">
         body {
+            font-family: Arial, sans-serif;
             margin: 0;
             overflow: hidden;
         }
 
-       #gif-container {
+        #gif-container {
             position: fixed;
             top: 0;
             left: 0;
@@ -34,7 +40,7 @@
             transform: translate(-50%, -50%);
             width: 900px;
             height: 700px;
-            background-color: white;
+           
             overflow: auto;
             display: flex;
             flex-direction: column;
@@ -46,75 +52,111 @@
             font-size: 20px;
             white-space: pre-line;
             overflow: hidden;
-            border-right: 2px solid black;
+            /* border-right: 2px solid black; */
             margin-top: 20px;
             line-height: 160%;
+            color: white;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        #blink::after {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            /* top: 0;
+            right: -10px; */
+            width: 3px;
+            height: 30px;
+            margin-left: 3px;
+            background-color: black;
+        }
+
+        #blink.active::after {
+            display: none;
+            /*active 클래스가 있으면 보이지 않음*/
         }
 
         #centered-image {
-            display: none; /* 초기에는 숨김 */
-            margin-left: 750px;
+            display: none;
+            /* 초기에는 숨김 */
+            margin-left: 820px;
             margin-top: auto;
             cursor: pointer;
         }
+        h1 { color:white; text-decoration-line: underline;}
     </style>
 </head>
+
 <body>
-  <div id="gif-container">
+    <div id="gif-container">
         <video id="video-background" autoplay muted loop>
             <source src="back.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
     <div id="white-rectangle">
-        <div id="typed-text">
-            안녕하세요. 목격자 <span id="name-placeholder">@@</span>님. 악몽을 꾸셨다고 들었습니다.<br>
-            지금부터 당신은 꿈에서 목격한 범인의 몽타주를 만들어야 합니다.<br>
-            당신이 몽타주를 완성해 제출하면, 우리는 그 몽타주와 일치하는 생김새를 가진 꿈 속 범인을 찾아낼 것입니다.<br>
-            당신은 더이상 그 사람으로 인해 악몽에 시달리지 않아도 됩니다.
+        <div>
+            <span id="typed-text">
+                안녕하세요. <span id="name-placeholder">@@</span>님. <br>
+                악몽을 꾸셨다고 들었습니다.<br>
+                지금부터 당신은 꿈에서 목격한 범인의 몽타주를 만들어야 합니다.<br>
+                당신이 몽타주를 완성해 제출하면, 우리는 그 몽타주와 일치하는 생김새를 가진 꿈 속 범인을 찾아낼 것입니다.<br>
+                당신은 더이상 그 사람으로 인해 악몽에 시달리지 않아도 됩니다.
+            </span><span id="blink"></span>
         </div>
+
+        <h1 id="centered-image" src="next.png" alt="Centered Image" onclick="navigateToNextPage()"> Next </h1>
+
         <img id="centered-image" src="next.png" alt="Centered Image" onclick="navigateToNextPage()">
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const textElement = document.getElementById('typed-text');
-        const namePlaceholder = document.getElementById('name-placeholder');
-        const centeredImage = document.getElementById('centered-image');
-        const gifContainer = document.getElementById('gif-container');
-        const textContent = textElement.textContent.trim();
-        textElement.textContent = '';
-
-        function typeWriterEffect(index) {
-            textElement.textContent += textContent[index];
-            index++;
-
-            if (index < textContent.length) {
-                setTimeout(function () {
-                    typeWriterEffect(index);
-                }, 50);
-            } else {
-                setTimeout(function () {
-                    centeredImage.style.display = 'block';
-                }, 500); // 이미지가 나타나는 시점 조절
+        document.addEventListener('DOMContentLoaded', function () {
+            const namePlaceholder = document.getElementById('name-placeholder');
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name');
+            if (name) {
+                namePlaceholder.innerHTML = name;
             }
+            const textElement = document.getElementById('typed-text');
+            const blinkP = document.getElementById('blink');
+            const centeredImage = document.getElementById('centered-image');
+            const gifContainer = document.getElementById('gif-container');
+            const textContent = textElement.textContent.trim();
+            const resplit = textElement.textContent.split(" ");
+            textElement.textContent = '';
+            index = 0;
+            function typeWriterEffect(index) {
+                textElement.textContent += textContent[index];
+                index++;
+
+                if (index < textContent.length) {
+                    setTimeout(function () {
+                        typeWriterEffect(index);
+                    }, 50);
+                } else {
+                    setTimeout(function () {
+                        centeredImage.style.display = 'block';
+                    }, 500);
+                    // 이미지가 나타나는 시점 조절
+                }
+            }
+            function blink() {
+                blinkP.classList.toggle("active"); // dynamic에 active 클래스 추가<->삭제 반복
+            }
+            setInterval(blink, 500)
+            setTimeout(function () {
+                typeWriterEffect(0);
+            }, 80);
+
+
+        });
+
+        function navigateToNextPage() {
+            window.location.href = "next-page.html"
         }
-
-        setTimeout(function () {
-            typeWriterEffect(0);
-        }, 80);
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const name = urlParams.get('name');
-        if (name) {
-            namePlaceholder.textContent = name;
-        }
-    });
-
-    function navigateToNextPage() {
-        window.location.href="next-page.html"
-    }
-</script>
+    </script>
 
 </body>
+
 </html>
